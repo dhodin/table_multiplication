@@ -2,6 +2,8 @@
 - Outil de revision des tables de multiplication pour les enfants
 
 # Suivi des realisations
+## 03 Fevrier 2022
+- Finalisation de la premiere version de la table de multiplication
 ## 02 Fevrier 2022
 - Création de l'écran d'ccueil
 ## 01 Fevrier 2022
