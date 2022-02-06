@@ -17,7 +17,8 @@ class _EcranAccueilState extends State<EcranAccueil> {
   Color _couleurResultat = Colors.black;
   int _nombreJuste = 0;
   int _nombreQuestions = 0;
-  int _note = 0;
+  double _note = 0.0;
+  String _texteNote = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,26 +35,45 @@ class _EcranAccueilState extends State<EcranAccueil> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _note = 0.0;
+            _nombreQuestions = 0;
+            _nombreJuste = 0;
+            _texteNote = "Note : ... (" + _nombreQuestions.toString() + ")";
+          });
+        },
+        tooltip: 'Remise a zero',
+        child: const Icon(Icons.refresh),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomAppBar(
-        color: Colors.blueGrey,
+        shape: const CircularNotchedRectangle(),
         child: Container(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-            child: Center(
-              child: Text(
-                "Note : " +
-                    _note.toString() +
-                    " / 20 (" +
-                    _nombreQuestions.toString() +
-                    ")",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30.0,
-                ),
-              ),
-            ),
-          ),
-          height: 50.0,
+              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                    child: Text(
+                      _resultat,
+                      style: TextStyle(
+                        color: _couleurResultat,
+                        fontSize: 30.0,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    _texteNote,
+                    style: TextStyle(
+                      fontSize: 30.0,
+                    ),
+                  ),
+                ],
+              )),
+          height: 120.0,
         ),
       ),
       body: SingleChildScrollView(
@@ -71,33 +91,20 @@ class _EcranAccueilState extends State<EcranAccueil> {
                   maMultiplication.ChangeDeTable(nouvelleValeur.toInt());
                   valeursMult = maMultiplication.Operation();
                   _tableChoisie = nouvelleValeur;
+                  _note = 0.0;
+                  _nombreQuestions = 0;
+                  _nombreJuste = 0;
+                  _texteNote =
+                      "Note : ... (" + _nombreQuestions.toString() + ")";
                 });
               },
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              child: Center(
-                child: Text(
-                  _resultat,
-                  style: TextStyle(
-                    color: _couleurResultat,
-                    fontSize: 30.0,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-              child: Divider(
-                color: Colors.black,
-              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   valeursMult[0].toString() + " x " + valeursMult[1].toString(),
-                  style: TextStyle(fontSize: 80.0),
+                  style: TextStyle(fontSize: 60.0),
                 ),
               ],
             ),
@@ -106,17 +113,13 @@ class _EcranAccueilState extends State<EcranAccueil> {
               children: [
                 Text(
                   "=",
-                  style: TextStyle(fontSize: 80.0),
+                  style: TextStyle(fontSize: 30.0),
                 ),
               ],
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                ),
+              child: ElevatedButton(
                 onPressed: () {
                   setState(() {
                     if ((valeursMult[0] * valeursMult[1]) == valeursMult[2]) {
@@ -138,21 +141,22 @@ class _EcranAccueilState extends State<EcranAccueil> {
                       _couleurResultat = Colors.red;
                     }
                     _nombreQuestions++;
-                    _note = ((_nombreJuste * 20) / _nombreQuestions).round();
+                    _note = ((_nombreJuste * 20) / _nombreQuestions);
+                    _texteNote = "Note : " +
+                        _note.toStringAsFixed(1) +
+                        " / 20 (" +
+                        _nombreQuestions.toString() +
+                        ")";
                     valeursMult = maMultiplication.Operation();
                   });
                 },
                 child: Text(valeursMult[2].toString() + " ?",
-                    style: TextStyle(fontSize: 80.0)),
+                    style: TextStyle(fontSize: 60.0)),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(16.0),
-              child: OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                ),
+              child: ElevatedButton(
                 onPressed: () {
                   setState(() {
                     if ((valeursMult[0] * valeursMult[1]) == valeursMult[3]) {
@@ -174,12 +178,17 @@ class _EcranAccueilState extends State<EcranAccueil> {
                       _couleurResultat = Colors.red;
                     }
                     _nombreQuestions++;
-                    _note = ((_nombreJuste * 20) / _nombreQuestions).round();
+                    _note = ((_nombreJuste * 20) / _nombreQuestions);
+                    _texteNote = "Note : " +
+                        _note.toStringAsFixed(1) +
+                        " / 20 (" +
+                        _nombreQuestions.toString() +
+                        ")";
                     valeursMult = maMultiplication.Operation();
                   });
                 },
                 child: Text(valeursMult[3].toString() + " ?",
-                    style: TextStyle(fontSize: 80.0)),
+                    style: TextStyle(fontSize: 60.0)),
               ),
             ),
           ],
